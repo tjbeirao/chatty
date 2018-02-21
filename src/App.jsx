@@ -8,7 +8,7 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: "",
-      messages: [{ user: "Bob", message: "Testing" }]
+      messages: []
     };
   }
 
@@ -30,21 +30,31 @@ class App extends Component {
         messages: messages
     })
   }
-};
+}
 
   componentDidMount() {
-    this.socket = new WebSocket("ws://localhost:3001/");
-    this.socket.onopen = (event) => {
-      console.log("Connected");
-    }
+    this.socket = new WebSocket("ws://localhost:3001");
 
-    setTimeout(() => {
-      const newMessage = { user: "Michelle", message: "Hello there!" };
-      const messages = this.state.messages.concat(newMessage);
+    this.socket.onmessage = data => {
+      console.log("received", data.data);
+      const newMessageAndID = JSON.parse(data.data);
+      console.log("parsed", newMessageAndID);
+      const messages = this.state.messages.concat(newMessageAndID);
       this.setState({ messages: messages });
-    }, 500);
+    };
+    this.socket.onopen = event => {
+      console.log("Connected to server");
+    };
+
+    console.log("componentDidMount <App />");
   }
-  
+
+  componentWillUnmount() {
+    if (this.socket) {
+      this.socket.close();
+    }
+  }
+
   render() {
     return (
       <div>
