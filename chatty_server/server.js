@@ -16,10 +16,11 @@ const wss = new SocketServer({ server });
 wss.on("connection", ws => {
   console.log("Client connected");
   ws.on("message", function incoming(message) {
-    const messageWithID = JSON.parse(message);
-    messageWithID.id = uuidv1();
-    wss.broadcast = function broadcast(data) {
-      const dataString = JSON.stringify(data);
+    const newMsg = JSON.parse(message);
+    newMsg.id = uuidv1();
+
+    wss.broadcast = function broadcast(input) {
+      const dataString = JSON.stringify(input);
       wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
           console.log("broadcast", typeof dataString);
@@ -27,7 +28,7 @@ wss.on("connection", ws => {
         }
       });
     };
-    wss.broadcast(messageWithID);
+    wss.broadcast(newMsg);
   });
 
   ws.on("close", () => console.log("Client disconnected"));

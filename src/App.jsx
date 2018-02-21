@@ -19,34 +19,27 @@ class App extends Component {
   _newMessage = message => {
     if (this.state.currentUser) {
       const newMessage = { user: this.state.currentUser, message: message };
-      const messages = this.state.messages.concat(newMessage);
-      this.setState({
-        messages: messages
-      });
+      const messageParsed = JSON.stringify(newMessage)
+      this.socket.send(messageParsed);
     } else {
       const newMessage = { user: "Anonymous", message: message };
-      const messages = this.state.messages.concat(newMessage);
-      this.setState({
-        messages: messages
-    })
+      const messageParsed = JSON.stringify(newMessage);
+      this.socket.send(messageParsed);
+    }
   }
-}
 
   componentDidMount() {
     this.socket = new WebSocket("ws://localhost:3001");
 
-    this.socket.onmessage = data => {
-      console.log("received", data.data);
-      const newMessageAndID = JSON.parse(data.data);
-      console.log("parsed", newMessageAndID);
+    this.socket.onmessage = input => {
+      const newMessageAndID = JSON.parse(input.data);
       const messages = this.state.messages.concat(newMessageAndID);
       this.setState({ messages: messages });
     };
-    this.socket.onopen = event => {
+
+      this.socket.onopen = event => {
       console.log("Connected to server");
     };
-
-    console.log("componentDidMount <App />");
   }
 
   componentWillUnmount() {
