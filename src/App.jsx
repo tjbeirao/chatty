@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+const uuid4 = require("uuid/v4");
 import ChatBar from "./ChatBar.jsx";
 import MessageList from "./MessageList.jsx";
 
@@ -6,35 +7,53 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: { name: "Bob" },
-      messages: [
-        { username: "Bob", content: "Has anyone seen my marbles?" },
-        {
-          username: "Anonymous",
-          content:
-            "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
-      ]
+      currentUser: "",
+      messages: [{ user: "Bob", message: "Testing" }]
     };
   }
 
+  _newUser = user => {
+    this.setState({ currentUser: user });
+  };
+
+  _newMessage = message => {
+    if (this.state.currentUser) {
+      const newMessage = { user: this.state.currentUser, message: message };
+      const messages = this.state.messages.concat(newMessage);
+      this.setState({
+        messages: messages
+      });
+    } else {
+      const newMessage = { user: "Anonymous", message: message };
+      const messages = this.state.messages.concat(newMessage);
+      this.setState({
+        messages: messages
+    })
+  }
+};
+
   componentDidMount() {
+    this.socket = new WebSocket("ws://localhost:3001/");
+    this.socket.onopen = (event) => {
+      console.log("Connected");
+    }
+
     setTimeout(() => {
-      const newMessage = {
-        id: 3,
-        username: "Michelle",
-        content: "Hello there!"
-      };
+      const newMessage = { user: "Michelle", message: "Hello there!" };
       const messages = this.state.messages.concat(newMessage);
       this.setState({ messages: messages });
-    }, 3000);
+    }, 500);
   }
-
+  
   render() {
     return (
       <div>
         <MessageList messages={this.state.messages} />
-        <ChatBar />
+        <ChatBar
+          _newUser={this._newUser}
+          _newMessage={this._newMessage}
+          currentUser={this.state.currentUser}
+        />
       </div>
     );
   }
