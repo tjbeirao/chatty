@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 
 class ChatBar extends Component {
-  onChange = event => {
-    this.props._newUser(event.target.value);
+  changeUser = event => {
+    if (event.key === "Enter") {
+      this.props._newUser(event.target.value);
+    }
   };
 
   onKeyPress = event => {
@@ -13,13 +15,12 @@ class ChatBar extends Component {
   };
 
   render() {
-    console.log("Rendering <ChatBar/>");
     return (
       <footer className="chatbar">
         <input
-          onChange={this.onChange}
+          onKeyPress={this.changeUser}
           className="chatbar-username"
-          placeholder="Your Name (Optional)"
+          placeholder="Change your user (Optional)"
           defaultValue={this.props.currentUser}
         />
         <input
