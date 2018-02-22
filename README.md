@@ -1,3 +1,4 @@
+![alt tag](https://github.com/tjbeirao/chatty/blob/master/Docs/Chatty.png "Main Page of Chatty")
 ##Project Dependencies
 
 * babel-core
