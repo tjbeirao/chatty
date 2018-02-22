@@ -2,9 +2,11 @@ const express = require("express");
 const SocketServer = require("ws").Server;
 const uuidv1 = require("uuid/v1");
 const WebSocket = require("ws");
-var randomColor = require("randomcolor");
 const PORT = 3001;
+const querystring = require("querystring");
+const fetch = require("node-fetch");
 const usersOnline = { type: "currentClients", clientsOn: 0 };
+const randomColor = require("randomcolor");
 
 const server = express()
   .use(express.static("public"))
@@ -13,7 +15,6 @@ const server = express()
   );
 
 const wss = new SocketServer({ server });
-    
 
 wss.broadcast = function broadcast(data) {
   const dataString = JSON.stringify(data);
@@ -48,7 +49,6 @@ wss.on("connection", ws => {
         throw new Error("Unknown event type " + data.type);
     }
   });
-
 
   ws.on("close", () => {
     usersOnline.clientsOn -= 1;

@@ -1,45 +1,25 @@
-React Boilerplate
-=====================
+##Project Dependencies
 
-A minimal and light dev environment for ReactJS.
+babel-core
+babel-loader
+babel-preset-es2015
+babel-preset-react
+babel-preset-stage-0
+css-loader
+eslint
+eslint-plugin-react
+node-sass
+sass-loader
+sockjs-client
+style-loader
+webpack
+webpack-dev-server
+react
+react-dom
+uuid
 
-### Usage
 
-Clone the boilerplate and create your own git repo.
+##Setup Steps
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
-
-Install the dependencies and start the server.
-
-```
-npm install
-npm start
-open http://localhost:3000
-```
-
-### Static Files
-
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
-
-### Dependencies
-
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+download the project and npm install should install all the dependencies
+then npm run in your command line from the root directory, and also npm run from your command line in the chatty_server directry and go to localhost:3000
